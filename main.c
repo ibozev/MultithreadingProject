@@ -63,28 +63,28 @@ int main() {
 	readBinFile(cars_1_input, cars_2_input);
 
 	//printing first queue arrays before threads work
-    printf("Cars in cars_1_input:");
-    printArray(cars_1_input, FIRST_ARR_SIZE);
-    printf("\n\nCars in cars_1_output:");
-    printArray(cars_1_output, FIRST_ARR_SIZE);
+	printf("Cars in cars_1_input:");
+	printArray(cars_1_input, FIRST_ARR_SIZE);
+	printf("\n\nCars in cars_1_output:");
+	printArray(cars_1_output, FIRST_ARR_SIZE);
 	printf("\n");
 
 	//printing second queue arrays before threads work
-    printf("\nCars in cars_2_input:");
+    	printf("\nCars in cars_2_input:");
 	printArray(cars_2_input, MAX_SIZE-FIRST_ARR_SIZE);
-    printf("\n\nCars in cars_2_output:");
+    	printf("\n\nCars in cars_2_output:");
 	printArray(cars_2_output, MAX_SIZE-FIRST_ARR_SIZE);
 	printf("\n\n");
 
 	//initializing pthreads arguments
-	threadDataInit(&thr_data[WRITER_1], FIRST_QUEUE_NAME, cars_1_input, FIRST_ARR_SIZE);
+	threadDataInit(&thr_data[WRITER_1], FIRST_QUEUE_NAME, cars_1_input, FIRST_ARR_SIZE);    
 	threadDataInit(&thr_data[READER_1], FIRST_QUEUE_NAME, cars_1_output, FIRST_ARR_SIZE);
 	threadDataInit(&thr_data[WRITER_2], SECOND_QUEUE_NAME, cars_2_input, MAX_SIZE - FIRST_ARR_SIZE);
 	threadDataInit(&thr_data[READER_2], SECOND_QUEUE_NAME, cars_2_output, MAX_SIZE - FIRST_ARR_SIZE);
-
+	    
 	//creating writing threads
 	for (int i = 0; i < NUM_THREADS-1; i+=2) {
-		result = pthread_create(&thread[i], NULL, writeToQueue, &thr_data[i]);
+ 	    result = pthread_create(&thread[i], NULL, writeToQueue, &thr_data[i]);
 	    if (result != 0) {
 	        printf("ERROR; return code from pthread_create() is %d\n", result);
 	        return EXIT_FAILURE;
@@ -98,7 +98,7 @@ int main() {
 
 	//creating reading threads
 	for (int i = 1; i < NUM_THREADS; i+=2) {
-		result = pthread_create(&thread[i], NULL, readFromQueue, &thr_data[i]);
+       	    result = pthread_create(&thread[i], NULL, readFromQueue, &thr_data[i]);
 	    if (result != 0) {
 	        printf("ERROR; return code from pthread_create() is %d\n", result);
 	        return EXIT_FAILURE;
@@ -106,25 +106,25 @@ int main() {
 	}
 
 	//joining all threads
-    for (int i = 0; i < NUM_THREADS; ++i) {
-        result = pthread_join(thread[i], NULL);
-        if (0!= result) {
-            printf("ERROR; return code from pthread_join() is %d\n", result);
-            return EXIT_FAILURE;
-        }
+    	for (int i = 0; i < NUM_THREADS; ++i) {
+            result = pthread_join(thread[i], NULL);
+            if (0!= result) {
+                printf("ERROR; return code from pthread_join() is %d\n", result);
+                return EXIT_FAILURE;
+            }
 	}
 
 	//printing first queue arrays after pthread_join
-    printf("\nCars that were sent to %s from cars_1_input:", FIRST_QUEUE_NAME);
-    printArray(cars_1_input, FIRST_ARR_SIZE);
-    printf("\n\nCars that were received from %s in cars_1_output:", FIRST_QUEUE_NAME);
-    printArray(cars_1_output, FIRST_ARR_SIZE);
+	printf("\nCars that were sent to %s from cars_1_input:", FIRST_QUEUE_NAME);
+	printArray(cars_1_input, FIRST_ARR_SIZE);
+	printf("\n\nCars that were received from %s in cars_1_output:", FIRST_QUEUE_NAME);
+	printArray(cars_1_output, FIRST_ARR_SIZE);
 	printf("\n");
 
 	//printing second queue arrays after pthread_join
-    printf("\nCars that were sent to %s from cars_2_input:", SECOND_QUEUE_NAME);
+        printf("\nCars that were sent to %s from cars_2_input:", SECOND_QUEUE_NAME);
 	printArray(cars_2_input, MAX_SIZE-FIRST_ARR_SIZE);
-    printf("\n\nCars that were received from %s in cars_2_output:", SECOND_QUEUE_NAME);
+        printf("\n\nCars that were received from %s in cars_2_output:", SECOND_QUEUE_NAME);
 	printArray(cars_2_output, MAX_SIZE-FIRST_ARR_SIZE);
 	printf("\n");
 
